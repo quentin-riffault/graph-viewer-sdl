@@ -1,0 +1,36 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Generate Makefile",
+            "command": "cmake",
+            "args": [
+                "-B${workspaceFolder}/build",
+                "-S${workspaceFolder}"
+            ],
+            "type": "shell",
+            "problemMatcher": []
+        },
+        {
+            "dependsOn": ["Generate Makefile"],
+            "label": "Build",
+            "command": "make",
+            "args": [
+                "-C${workspaceFolder}/build"
+            ],
+            "type": "shell",
+            "problemMatcher": []
+        },
+        {
+            "dependsOn": ["Build"],
+            "label": "Run",
+            "command": "${workspaceFolder}/build/TestGraphViewer",
+            "args": [],
+            "type": "shell",
+            "problemMatcher": []
+        }
+    ],
+}
