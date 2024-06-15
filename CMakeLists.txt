@@ -1,26 +1,41 @@
 cmake_minimum_required(VERSION 3.11)
 
-project(GraphViewer C)
+project(GraphViewer C CXX)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
-include(FetchContent)
-FetchContent_Declare(
-    libsdl
-    GIT_REPOSITORY  https://github.com/libsdl-org/SDL.git
-    GIT_TAG     release-2.30.3
+include_directories(
+    "include"
 )
 
-FetchContent_MakeAvailable(libsdl)
+link_directories(
+    "build"
+)
 
-set(LIBSDL_INCLUDE PRIVATE "build/deps/libsdl-build/include/")
-###############################################################################
-# LibGraphViewer
+add_library(
+    gv_utils
+    SHARED
+    
+    src/utils/hash_map.c
+)
 
-add_library(GraphViewer SHARED src/graph_sdl.c)
-target_include_directories(GraphViewer PUBLIC "include" ${LIBSDL_INCLUDE})
+set_target_properties(
+    gv_utils
+    PROPERTIES
+    LINKER_LANGUAGE C
+)
 
-###############################################################################
-# TestGraphViewer
+add_executable(
+    gv_utils_tests
 
-add_executable(TestGraphViewer main.c)
-target_include_directories(TestGraphViewer PUBLIC "include" ${LIBSDL_INCLUDE})
-target_link_libraries(TestGraphViewer PUBLIC GraphViewer SDL2-2.0)
+    tests/utils/test_hash_map.cpp
+)
+
+target_link_libraries(
+    gv_utils_tests
+
+    gtest_main
+    gtest
+    gv_utils
+)
