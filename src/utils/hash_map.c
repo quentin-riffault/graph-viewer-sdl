@@ -17,17 +17,13 @@ void* hash_map_find(int id, HashMap* map){
     if(map == NULL) return NULL;
     HashValue* bucket_ptr = map->buckets[hash_fn(id)];
 
-    do{
-        if(bucket_ptr == NULL){
-            return NULL;
-        }
-
+    while(bucket_ptr != NULL){
         if(bucket_ptr->id == id){
             return  bucket_ptr->value;
         }
 
         bucket_ptr = bucket_ptr->next;
-    }while(bucket_ptr != NULL);
+    }
 
     return NULL;
 }
@@ -70,19 +66,15 @@ static HashValue* __get_parent_hash_value_ptr(int id, HashMap* map){
     HashValue* bucket_ptr = map->buckets[hash_fn(id)];
     HashValue* parent_ptr = NULL;
 
-    do{
-        if(bucket_ptr == NULL){
-            return NULL;
-        }
-
+    while(bucket_ptr != NULL){
         if(bucket_ptr->id == id){
             return  parent_ptr;
         }
 
         parent_ptr = bucket_ptr;
         bucket_ptr = bucket_ptr->next;
-    }while(bucket_ptr != NULL);
-
+    }
+    
     return NULL;
 }
 
